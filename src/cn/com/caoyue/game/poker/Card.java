@@ -9,7 +9,7 @@ package cn.com.caoyue.game.poker;
 
 public class Card {
     enum Suit {
-        spades("spades"), clubs("clubs"), hearts("hearts"), diamonds("diamonds");
+        spades("♠"), clubs("♦"), hearts("♥"), diamonds("♣");
         private final String suit;
 
         Suit(String suit) {
@@ -17,6 +17,11 @@ public class Card {
         }
 
         public String getSuit() {
+            return this.suit;
+        }
+
+        @Override
+        public String toString() {
             return this.suit;
         }
     }
@@ -86,6 +91,6 @@ public class Card {
 
     @Override
     public String toString() {
-        return isJoker ? joker.toString() : (suit.toString() + "-" + point.toString());
+        return isJoker ? joker.toString() : (suit.toString() + point.toString());
     }
 }

@@ -32,6 +32,12 @@ public class Poker {
         return poker;
     }
 
+    public Card[] getCards(int numberOfCards) {
+        Card[] temp = new Card[numberOfCards];
+        System.arraycopy(poker, 0, temp, 0, numberOfCards);
+        return temp;
+    }
+
     //单次交叉洗牌
     public void crossShuffle() {
         Card[] pokerA = new Card[poker.length / 2];
@@ -52,7 +58,7 @@ public class Poker {
     }
 
     //交换两张牌
-    private void swap(int indexOfCard1, int indexOfCard2) {
+    private void exchange(int indexOfCard1, int indexOfCard2) {
         Card temp;
         temp = poker[indexOfCard1];
         poker[indexOfCard1] = poker[indexOfCard2];
@@ -60,9 +66,9 @@ public class Poker {
     }
 
     //交换法洗牌
-    public void swapShuffle() {
+    public void exchangeShuffle() {
         for (int i = poker.length - 1; i > 0; i--) {
-            swap(i, new Random(System.currentTimeMillis()).nextInt(i));
+            exchange(i, new Random(System.currentTimeMillis()).nextInt(i));
         }
     }
 }
