@@ -7,6 +7,8 @@
 
 package cn.com.caoyue.game.poker;
 
+import java.util.Random;  //提供对随机数的支持
+
 public class Poker {
     private Card[] poker;
 
@@ -47,5 +49,20 @@ public class Poker {
         crossShuffle();
         crossShuffle();
         crossShuffle();
+    }
+
+    //交换两张牌
+    private void swap(int indexOfCard1, int indexOfCard2) {
+        Card temp;
+        temp = poker[indexOfCard1];
+        poker[indexOfCard1] = poker[indexOfCard2];
+        poker[indexOfCard2] = temp;
+    }
+
+    //交换法洗牌
+    public void swapShuffle() {
+        for (int i = poker.length - 1; i > 0; i--) {
+            swap(i, new Random(System.currentTimeMillis()).nextInt(i));
+        }
     }
 }
