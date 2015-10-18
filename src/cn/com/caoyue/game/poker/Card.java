@@ -33,28 +33,59 @@ public class Card {
             return this.point;
         }
 
+        @Override
         public String toString() {
             return this.point;
         }
     }
 
-    private Suit suit;
-    private Point point;
+    enum Joker {
+        Red("RedJoker"), Black("BlackJoker");
+        private String name;
+
+        Joker(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
+    private final Suit suit;
+    private final Point point;
+    private final Joker joker;
+    private final boolean isJoker;
 
     public Card(String suit, String point) {
         this.suit = Suit.valueOf(suit);
         this.point = Point.valueOf(point);
+        this.isJoker = false;
+        this.joker = Joker.Black;
+    }
+
+    public Card(String joker) {
+        this.joker = Joker.valueOf(joker);
+        this.isJoker = true;
+        this.suit = Suit.spades;
+        this.point = Point.A;
     }
 
     public String getSuit() {
-        return suit.toString();
+        return isJoker ? joker.toString() : suit.toString();
     }
 
     public String getPoint() {
-        return point.toString();
+        return isJoker ? joker.toString() : point.toString();
     }
 
     public int getPointNum() {
-        return point.ordinal() + 2;
+        return isJoker ? (joker == Joker.Black ? 15 : 16) : point.ordinal() + 2;
+    }
+
+    @Override
+    public String toString() {
+        return isJoker ? joker.toString() : (suit.toString() + "-" + point.toString());
     }
 }
