@@ -10,23 +10,41 @@ package cn.com.caoyue.game.poker;
 
 import java.util.*;
 
-public class TexasPoker {
-    Card[] cards;
+public class TexasPoker implements Comparable {
+    private Card[] cards;
+    private int value;
 
     public TexasPoker() {
         Poker poker = new Poker(false);
         poker.exchangeShuffle();
         cards = poker.getCards(7);
         Arrays.sort(cards);
+        value = getResult();
+
     }
 
     public TexasPoker(Card[] cards) {
         this.cards = cards;
         Arrays.sort(this.cards);
+        value = getResult();
     }
 
     public Card[] getCards() {
         return cards;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (value == ((TexasPoker) o).value) {
+            return 0;
+        }
+        if (value < ((TexasPoker) o).value) {
+            return -1;
+        }
+        if (value > ((TexasPoker) o).value) {
+            return 1;
+        }
+        return 0;
     }
 
     //朱大算法
@@ -143,7 +161,7 @@ public class TexasPoker {
         return res;
     }
 
-    public Card[][] combine(Card[] poker, int n, int length) {
+    private Card[][] combine(Card[] poker, int n, int length) {
         int t = 0;
         Card[][] res = new Card[length][n];
         boolean find = false;
@@ -186,7 +204,7 @@ public class TexasPoker {
         return res;
     }
 
-    public int getResult() {
+    private int getResult() {
         Card[][] res;
         Card[] poker = cards;
         int temp = 0;
@@ -214,7 +232,7 @@ public class TexasPoker {
 
     private HashMap<Integer, Integer> map;
 
-    public int getCode(Card[] poker) {
+    private int getCode(Card[] poker) {
         initMap(poker);
         Arrays.sort(poker);
         int sum = 0;
