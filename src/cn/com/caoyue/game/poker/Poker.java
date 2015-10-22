@@ -32,10 +32,14 @@ public class Poker {
         return poker;
     }
 
-    public Card[] getCards(int numberOfCards) {
+    public Card[] getCards(int startIndex, int numberOfCards) {
         Card[] temp = new Card[numberOfCards];
-        System.arraycopy(poker, 0, temp, 0, numberOfCards);
+        System.arraycopy(poker, startIndex, temp, 0, numberOfCards);
         return temp;
+    }
+
+    public Card[] getCards(int numberOfCards) {
+        return getCards(0, numberOfCards);
     }
 
     //单次交叉洗牌

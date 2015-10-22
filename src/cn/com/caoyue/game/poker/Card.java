@@ -7,10 +7,11 @@
 
 package cn.com.caoyue.game.poker;
 
-public class Card {
+public class Card implements Comparable {
     enum Suit {
         spades("♠"), clubs("♦"), hearts("♥"), diamonds("♣");
         private final String suit;
+        private Object o;
 
         Suit(String suit) {
             this.suit = suit;
@@ -89,8 +90,26 @@ public class Card {
         return isJoker ? (joker == Joker.Black ? 15 : 16) : point.ordinal() + 2;
     }
 
+    public Suit getSuitObj() {
+        return suit;
+    }
+
     @Override
     public String toString() {
         return isJoker ? joker.toString() : (suit.toString() + point.toString());
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (this == o || getPointNum() == ((Card) o).getPointNum()) {
+            return 0;
+        }
+        if (getPointNum() < ((Card) o).getPointNum()) {
+            return -1;
+        }
+        if (getPointNum() > ((Card) o).getPointNum()) {
+            return 1;
+        }
+        return 0;
     }
 }
