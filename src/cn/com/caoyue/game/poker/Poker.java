@@ -75,4 +75,48 @@ public class Poker {
             exchange(i, new Random(System.currentTimeMillis()).nextInt(i));
         }
     }
+
+    //Reference: http://att.newsmth.net/att.php?p.1032.47005.1743.pdf
+    //数组下标从1开始，from是圈的头部，mod是要取模的数 mod 应该为 2 * n + 1，时间复杂度O(圈长）
+    private void cycleLeader(int from, int mod) {
+        Card last = poker[from], t;
+        int i;
+        for (i = from * 2 % mod; i != from; i = i * 2 % mod) {
+            t = poker[i];
+            poker[i] = last;
+            last = t;
+        }
+        poker[from] = last;
+    }
+
+    //翻转字符串时间复杂度O(to - from)
+    private void reverse(int from, int to) {
+        Card t;
+        for (; from < to; ++from, --to) {
+            t = poker[from];
+            poker[from] = poker[to];
+            poker[to] = t;
+        }
+    }
+
+    //循环右移num位 时间复杂度O(n)
+    private void rightRotate(int num, int n) {
+        reverse(1, n - num);
+        reverse(n - num + 1, n);
+        reverse(1, n);
+    }
+
+    //完美洗牌算法 时间O(n)，空间O(1)
+    public void inShuffle3() {
+        int n = poker.length / 2 - 1, k, m;
+        for (k = 1; !(Math.pow(3, k) <= 2 * n && 2 * n < Math.pow(3, k + 1)); k++) ;
+        m = (int) ((Math.pow(3, k) - 1) / 2);
+        rightRotate(m, n);
+        for (int i = 0; i < k; i++) {
+            cycleLeader((int) Math.pow(3, i), 2 * n + 1);
+        }
+        reverse(2 * m + 1, 2 * n);
+        exchange(poker.length - 1, new Random(System.currentTimeMillis()).nextInt(poker.length));
+        exchangeShuffle();
+    }
 }
