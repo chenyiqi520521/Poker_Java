@@ -1,7 +1,8 @@
 // * * * * * * * * * * * * * * * * * * * * * * * *
 // * REDROCK-TEAM HOMEWORK 3 (20151017)          *
-// * Level 4 - Texas Poker                       *
+// * Level 3 - Poker & Shuffle                   *
 // * Author:  Haruue Icymoon                     *
+// * Time:    Fri Oct 23 18:24:31 CST 2015       *
 // * Website: http://www.caoyue.com.cn/          *
 // * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -9,10 +10,22 @@ package cn.com.caoyue.game.poker;
 
 import java.util.Random;  //提供对随机数的支持
 
+/**
+ * Description:
+ * <br>单副扑克牌类，提供定义、获取牌、洗牌方法
+ * <br>This is homework in RedRockTeam.
+ * Some Algorithm Reference: http://att.newsmth.net/att.php?p.1032.47005.1743.pdf
+ *
+ * @author Haruue Icymoon haruue@caoyue.com.cn
+ */
+
 public class Poker {
     private Card[] poker;
 
-    //初始化牌堆。按照 spades-2, clubs-2, hearts-2, diamonds-2, ..., spades-10, ..., spades-K, ..., spades-A, ..., BlackJoker, RedJoker 排列
+    /**
+     * 生成一副牌，如果需要大小王，则生成 54 张牌，如果不需要，则生成 52 张牌。按照 spades-2, clubs-2, hearts-2, diamonds-2, ..., spades-10, ..., spades-K, ..., spades-A, ..., BlackJoker, RedJoker 排列
+     * @param isNeedJoker 是否需要大小王， true 需要， false 不需要
+     */
     public Poker(boolean isNeedJoker) {
         int index = 0;
         poker = new Card[isNeedJoker ? 54 : 52];
@@ -28,16 +41,31 @@ public class Poker {
         }
     }
 
+    /**
+     * 获得这副牌
+     * @return 存储每张卡片信息的数组
+     */
     public Card[] getPoker() {
         return poker;
     }
 
+    /**
+     * 获得这副牌中的一些卡片
+     * @param startIndex 起始索引值
+     * @param numberOfCards 要获得卡片的张数
+     * @return 存储这些卡片信息的数组
+     */
     public Card[] getCards(int startIndex, int numberOfCards) {
         Card[] temp = new Card[numberOfCards];
         System.arraycopy(poker, startIndex, temp, 0, numberOfCards);
         return temp;
     }
 
+    /**
+     * 获得这副牌开头的一些卡片，相当于 getCards(0,numberOfCards)
+     * @param numberOfCards 要获得卡片的张数
+     * @return 存储这些卡片信息的数组
+     */
     public Card[] getCards(int numberOfCards) {
         return getCards(0, numberOfCards);
     }
@@ -53,7 +81,11 @@ public class Poker {
         }
     }
 
-    //三次交叉洗牌
+    /**
+     * 三次交叉洗牌<br>
+     * 第一种洗牌方式，中间分开， 2 摞牌交叉洗。洗 3 次
+     * @deprecated 此洗牌方式缺乏随机性
+     */
     public void threeTimesCrossShuffle() {
         crossShuffle();
         crossShuffle();
@@ -68,7 +100,10 @@ public class Poker {
         poker[indexOfCard2] = temp;
     }
 
-    //交换法洗牌
+    /**
+     * 交换法洗牌<br>
+     * 最后一张牌与他前面 53 张牌中随机一张交换位置。<br>倒数第二张牌与他前面 52 张牌中随机一张交换位置。<br>倒数第三张牌与他前面 51 张牌中随机一张交换位置。<br>…………<br>第 2 张与第一张交换
+     */
     public void exchangeShuffle() {
         for (int i = poker.length - 1; i > 0; i--) {
             exchange(i, new Random().nextInt(i));
@@ -131,7 +166,10 @@ public class Poker {
         poker = tempPoker;
     }
 
-    //这才是第三种洗牌方法——随机方法选择
+    /**
+     * 随机组合方式洗牌<br>
+     * 将几种方式随机组合来洗牌，这些方式包含：交叉洗牌、交换法洗牌、inShuffle、奇后偶前交换，洗 5 次，每次的随机选择一种方法
+     */
     public void randomMethodShuffle() {
         for (int i = 1; i <= 5; i++) {
             switch (new Random().nextInt(4)) {

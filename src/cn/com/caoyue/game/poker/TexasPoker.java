@@ -2,46 +2,72 @@
 // * REDROCK-TEAM HOMEWORK 3 (20151017)          *
 // * Level 4 - Texas Poker                       *
 // * Author:  Haruue Icymoon                     *
+// * Time:    Fri Oct 23 18:24:31 CST 2015       *
 // * Website: http://www.caoyue.com.cn/          *
 // * * * * * * * * * * * * * * * * * * * * * * * *
-
 
 package cn.com.caoyue.game.poker;
 
 import java.util.*;
 
+/**
+ * Description:
+ * <br>德州扑克类，提供定义、获取、比较方法
+ * <br>This is homework in RedRockTeam.
+ * <br>Using some algorithm by <a href="https://github.com/Jude95/Texas.git">Jude95</a>
+ *
+ * @author Haruue Icymoon haruue@caoyue.com.cn
+ */
+
 public class TexasPoker implements Comparable {
     private Card[] cards;
     private int value;
 
+    /**
+     * 随机牌堆<br>
+     * 随机获得 7 张牌来组合成一个牌堆
+     */
     public TexasPoker() {
         Poker poker = new Poker(false);
         poker.exchangeShuffle();
         cards = poker.getCards(7);
         Arrays.sort(cards);
         value = getResult();
-
     }
 
+    /**
+     * 自定义牌堆<br>
+     * 自定义 7 张牌来组成一个牌堆
+     * @param cards 需要自定义的 7 张牌组成的数组，必须是 Card 类型且 cards.length == 7
+     */
     public TexasPoker(Card[] cards) {
         this.cards = cards;
         Arrays.sort(this.cards);
         value = getResult();
     }
 
+    /**
+     * 获得牌堆中的 7 张牌
+     * @return 7 张牌组成的数组
+     */
     public Card[] getCards() {
         return cards;
     }
 
+    /**
+     * 将这个德州扑克牌堆与另一个牌堆比较，返回比较结果
+     * @param anotherTexasPoker 需要比较的另一个牌堆
+     * @return 1大于，0等于，-1小于
+     */
     @Override
-    public int compareTo(Object o) {
-        if (value == ((TexasPoker) o).value) {
+    public int compareTo(Object anotherTexasPoker) {
+        if (value == ((TexasPoker) anotherTexasPoker).value) {
             return 0;
         }
-        if (value < ((TexasPoker) o).value) {
+        if (value < ((TexasPoker) anotherTexasPoker).value) {
             return -1;
         }
-        if (value > ((TexasPoker) o).value) {
+        if (value > ((TexasPoker) anotherTexasPoker).value) {
             return 1;
         }
         return 0;
