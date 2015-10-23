@@ -11,7 +11,8 @@ Poker Java
 *注意，一切代码使用 UTF-8 编写，运行时请确保使用这个参数 <code>-Dfile.encoding=UTF-8</code>
 
 ##Known BUG & Troubleshooting
-由于暂时没有进行充分的调试，当前没有发现 BUG ，如果你发现了新的 BUG ，欢迎提交 [issue](https://github.com/haruue/DrawGraph_Java/issues) ，万分感谢 !
+Poker 类中，第三种洗牌方式不一定比第二种好。 <br />
+如果你发现了新的 BUG ，欢迎提交 [issue](https://github.com/haruue/DrawGraph_Java/issues) ，万分感谢 !
 
 ##Developed By
 Haruue Icymoon <haruue@caoyue.com.cn> <br />
