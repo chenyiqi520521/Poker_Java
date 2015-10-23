@@ -42,13 +42,12 @@ public class Poker {
         return getCards(0, numberOfCards);
     }
 
-    //单次交叉洗牌
-    public void crossShuffle() {
+    //单次交叉洗牌 (不可单独使用，否则结果无随机性)
+    private void crossShuffle() {
         Card[] pokerA = new Card[poker.length / 2];
         System.arraycopy(poker, 0, pokerA, 0, pokerA.length);
         Card[] pokerB = new Card[poker.length / 2];
         System.arraycopy(poker, pokerA.length, pokerB, 0, pokerB.length);
-        System.out.println(Math.random());
         for (int i = 0; i < pokerA.length + pokerB.length; i++) {
             poker[i] = ((i % 2 == 0) ? pokerA : pokerB)[i / 2];
         }
@@ -72,7 +71,7 @@ public class Poker {
     //交换法洗牌
     public void exchangeShuffle() {
         for (int i = poker.length - 1; i > 0; i--) {
-            exchange(i, new Random(System.currentTimeMillis()).nextInt(i));
+            exchange(i, new Random().nextInt(i));
         }
     }
 
@@ -106,8 +105,8 @@ public class Poker {
         reverse(1, n);
     }
 
-    //完美洗牌算法 时间O(n)，空间O(1)
-    public void inShuffle3() {
+    //完美洗牌算法 (不可单独使用，否则结果无随机性) 时间O(n)，空间O(1)
+    private void inShuffle() {
         int n = poker.length / 2 - 1, k, m;
         for (k = 1; !(Math.pow(3, k) <= 2 * n && 2 * n < Math.pow(3, k + 1)); k++) ;
         m = (int) ((Math.pow(3, k) - 1) / 2);
@@ -116,7 +115,39 @@ public class Poker {
             cycleLeader((int) Math.pow(3, i), 2 * n + 1);
         }
         reverse(2 * m + 1, 2 * n);
-        exchange(poker.length - 1, new Random(System.currentTimeMillis()).nextInt(poker.length));
+        exchange(poker.length - 1, new Random().nextInt(poker.length));
         exchangeShuffle();
+    }
+
+    //奇后置，偶前置 (不可单独使用，否则结果无随机性)
+    private void gatherOddEven() {
+        Card[] tempPoker = new Card[poker.length];
+        for (int i = 0; i < poker.length / 2; i++) {
+            tempPoker[i] = poker[2 * i];
+        }
+        for (int i = 1; i <= poker.length / 2; i++) {
+            tempPoker[poker.length / 2 + i - 1] = poker[2 * i - 1];
+        }
+        poker = tempPoker;
+    }
+
+    //这才是第三种洗牌方法——随机方法选择
+    public void randomMethodShuffle() {
+        for (int i = 1; i <= 5; i++) {
+            switch (new Random().nextInt(4)) {
+                case 0:
+                    crossShuffle();
+                    break;
+                case 1:
+                    exchangeShuffle();
+                    break;
+                case 2:
+                    inShuffle();
+                    break;
+                case 3:
+                    gatherOddEven();
+                    break;
+            }
+        }
     }
 }
